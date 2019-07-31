@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './NewTodoForm.css'
 import uuid from 'uuid/v4';
 
 class NewTodoForm extends Component {
@@ -17,28 +18,37 @@ class NewTodoForm extends Component {
 
     handleSubmit(evt) {
         evt.preventDefault();
-        const newTask = {task: this.state.task, id: uuid(), completed: false};
-        this.props.createTask(newTask);
-        this.setState({
-            task: ""
-        });
+        if (this.state.task) {
+            const newTask = {task: this.state.task, id: uuid(), completed: false};
+            // if (localStorage.todos) {
+            //     localStorage.setItem('todos', [localStorage.getItem('todos'), newTask]);
+            // } else {
+            //     console.log('pushing');
+            //     localStorage.todos = [].push(newTask);
+            // }
+            this.props.createTask(newTask);
+            this.setState({
+                task: ""
+            });
+        }
+
     }
 
     render() {
         return (
-            <div>
-                <h1>New Todo</h1>
-                <form onSubmit={this.handleSubmit}>
-                    <input
-                        placeholder="Add Todo"
-                        value={this.state.task}
-                        name="task"
-                        type="text"
-                        onChange={this.handleChange}
-                    />
-                    <button>Add Todo</button>
-                </form>
-            </div>
+            <form
+                className="NewTodoForm"
+                onSubmit={this.handleSubmit}
+            >
+                <input
+                    placeholder="Add Todo"
+                    value={this.state.task}
+                    name="task"
+                    type="text"
+                    onChange={this.handleChange}
+                />
+                <button>Add Todo</button>
+            </form>
         );
     }
 }

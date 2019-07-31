@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
 import Todo from './Todo';
 import NewTodoForm from "./NewTodoForm";
+import './TodoList.css'
 
 class TodoList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            todos: [
-                {
-                    task: 'Clean the kitchen',
-                    id: 'zalupen',
-                    completed: false
-                }
-            ]
+            todos: localStorage.getItem('todos') ?
+                JSON.parse(localStorage.getItem('todos'))
+                : []
         };
         this.createTask = this.createTask.bind(this);
         this.removeTask = this.removeTask.bind(this);
@@ -20,9 +17,15 @@ class TodoList extends Component {
         this.toggleCompletion = this.toggleCompletion.bind(this);
     }
 
+    saveState() {
+        localStorage.setItem("todos", JSON.stringify(this.state.todos));
+    }
+
     createTask(newTask) {
         this.setState({
             todos: [...this.state.todos, newTask]
+        }, () => {
+            this.saveState();
         });
     }
 
@@ -31,6 +34,8 @@ class TodoList extends Component {
             todos: this.state.todos.filter(task => (
                 task.id !== id
             ))
+        }, () => {
+            this.saveState();
         });
     }
 
@@ -41,7 +46,11 @@ class TodoList extends Component {
             }
             return todo;
         });
-        this.setState({ todos: updatedTodos });
+        this.setState({
+            todos: updatedTodos
+        }, () => {
+            this.saveState();
+        });
     }
 
     toggleCompletion(id) {
@@ -51,10 +60,15 @@ class TodoList extends Component {
             }
             return todo;
         });
-        this.setState({ todos: updatedTodos });
+        this.setState({
+            todos: updatedTodos
+        }, () => {
+            this.saveState();
+        });
     }
 
     render() {
+        console.log(this.state.todos);
         let tasks = this.state.todos.map(item => (
                 <Todo
                     id={item.id}
@@ -66,13 +80,13 @@ class TodoList extends Component {
                     complete={this.toggleCompletion}
                 />
         ));
-
         return (
-            <div>
-                <NewTodoForm createTask={this.createTask} />
+            <div className='TodoList'>
+                <h1>Todo List! <span>Simple React Todo List</span></h1>
                 <ul>
                     {tasks}
                 </ul>
+                <NewTodoForm createTask={this.createTask} />
             </div>
         )
     }
