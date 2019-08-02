@@ -17,15 +17,14 @@ class TodoList extends Component {
         this.toggleCompletion = this.toggleCompletion.bind(this);
     }
 
-    saveState() {
+    componentDidUpdate() {
+        console.log('updating localstorage');
         localStorage.setItem("todos", JSON.stringify(this.state.todos));
     }
 
     createTask(newTask) {
         this.setState({
             todos: [...this.state.todos, newTask]
-        }, () => {
-            this.saveState();
         });
     }
 
@@ -34,8 +33,6 @@ class TodoList extends Component {
             todos: this.state.todos.filter(task => (
                 task.id !== id
             ))
-        }, () => {
-            this.saveState();
         });
     }
 
@@ -48,8 +45,6 @@ class TodoList extends Component {
         });
         this.setState({
             todos: updatedTodos
-        }, () => {
-            this.saveState();
         });
     }
 
@@ -62,8 +57,6 @@ class TodoList extends Component {
         });
         this.setState({
             todos: updatedTodos
-        }, () => {
-            this.saveState();
         });
     }
 
