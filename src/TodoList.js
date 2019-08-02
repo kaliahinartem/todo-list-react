@@ -68,7 +68,6 @@ class TodoList extends Component {
     }
 
     render() {
-        console.log(this.state.todos);
         let tasks = this.state.todos.map(item => (
                 <Todo
                     id={item.id}

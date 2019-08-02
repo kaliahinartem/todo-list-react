@@ -19,13 +19,11 @@ class NewTodoForm extends Component {
     handleSubmit(evt) {
         evt.preventDefault();
         if (this.state.task) {
-            const newTask = {task: this.state.task, id: uuid(), completed: false};
-            // if (localStorage.todos) {
-            //     localStorage.setItem('todos', [localStorage.getItem('todos'), newTask]);
-            // } else {
-            //     console.log('pushing');
-            //     localStorage.todos = [].push(newTask);
-            // }
+            const newTask = {
+                task: this.state.task,
+                id: uuid(),
+                completed: false
+            };
             this.props.createTask(newTask);
             this.setState({
                 task: ""
